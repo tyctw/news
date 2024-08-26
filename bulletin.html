@@ -1,0 +1,471 @@
+<html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>TYCTW會考落點分析平台</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700&display=swap');
+
+    :root {
+        --primary-color: #4a90e2;
+        --secondary-color: #50c878;
+        --accent-color: #ff6b6b;
+        --background-color: #f7f9fc;
+        --text-color: #333;
+        --light-text-color: #666;
+    }
+
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    body {
+        font-family: 'Noto Sans TC', sans-serif;
+        background-color: var(--background-color);
+        color: var(--text-color);
+        line-height: 1.6;
+    }
+
+    .header {
+        background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+        color: white;
+        padding: 1rem 0;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        position: fixed;
+        width: 100%;
+        top: 0;
+        z-index: 1000;
+        transition: all 0.3s ease;
+    }
+
+    .header-content {
+        max-width: 1200px;
+        margin: 0 auto;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0 1rem;
+    }
+
+    .logo {
+        display: flex;
+        align-items: center;
+    }
+
+    .logo svg {
+        width: 40px;
+        height: 40px;
+        margin-right: 0.5rem;
+        filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
+    }
+
+    .logo-text {
+        font-size: 1.2rem;
+        font-weight: 700;
+        text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    .nav-toggle {
+        display: none;
+        background: none;
+        border: none;
+        color: white;
+        font-size: 1.5rem;
+        cursor: pointer;
+    }
+
+    .nav-menu {
+        display: flex;
+        list-style: none;
+    }
+
+    .nav-menu li {
+        margin-left: 1.5rem;
+    }
+
+    .nav-menu a {
+        color: white;
+        text-decoration: none;
+        font-weight: 500;
+        transition: all 0.3s ease;
+        padding: 0.5rem 1rem;
+        border-radius: 20px;
+    }
+
+    .nav-menu a:hover {
+        background-color: rgba(255,255,255,0.2);
+        color: var(--accent-color);
+    }
+
+    .container {
+        max-width: 1000px;
+        margin: 7rem auto 3rem;
+        padding: 0 1rem;
+    }
+
+    .section-title {
+        font-size: 2rem;
+        color: var(--primary-color);
+        margin-bottom: 2rem;
+        text-align: center;
+        position: relative;
+        padding-bottom: 0.5rem;
+    }
+
+    .section-title::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 50px;
+        height: 3px;
+        background-color: var(--accent-color);
+    }
+
+    .news-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 2rem;
+    }
+
+    .news-item {
+        background-color: white;
+        border-radius: 15px;
+        overflow: hidden;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        transition: all 0.3s ease;
+        position: relative;
+    }
+
+    .news-item::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 5px;
+        background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+    }
+
+    .news-item:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 15px 40px rgba(0,0,0,0.15);
+    }
+
+    .news-content {
+        padding: 1.5rem;
+    }
+
+    .news-date {
+        font-size: 0.9rem;
+        color: var(--light-text-color);
+        margin-bottom: 0.5rem;
+        display: flex;
+        align-items: center;
+    }
+
+    .news-date i {
+        margin-right: 0.5rem;
+        color: var(--primary-color);
+    }
+
+    .news-title {
+        font-size: 1.2rem;
+        font-weight: 700;
+        margin-bottom: 1rem;
+        color: var(--primary-color);
+    }
+
+    .news-excerpt {
+        font-size: 1rem;
+        color: var(--text-color);
+        margin-bottom: 1.2rem;
+        line-height: 1.6;
+    }
+
+    .read-more {
+        display: inline-flex;
+        align-items: center;
+        padding: 0.6rem 1.2rem;
+        background-color: var(--secondary-color);
+        color: white;
+        text-decoration: none;
+        border-radius: 25px;
+        transition: all 0.3s ease;
+        font-size: 0.9rem;
+        font-weight: 500;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+
+    .read-more i {
+        margin-left: 0.5rem;
+    }
+
+    .read-more:hover {
+        background-color: var(--primary-color);
+        transform: translateY(-2px);
+        box-shadow: 0 6px 15px rgba(0,0,0,0.15);
+    }
+
+    #refresh-btn {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 3rem auto;
+        padding: 1rem 2rem;
+        background-color: var(--primary-color);
+        color: white;
+        border: none;
+        border-radius: 30px;
+        font-size: 1.1rem;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    }
+
+    #refresh-btn i {
+        margin-right: 0.5rem;
+    }
+
+    #refresh-btn:hover {
+        background-color: var(--secondary-color);
+        transform: translateY(-3px);
+        box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+    }
+
+    #visitor-count {
+        text-align: center;
+        font-size: 1rem;
+        color: var(--light-text-color);
+        margin-top: 2rem;
+        padding: 1rem;
+        background-color: white;
+        border-radius: 10px;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    #visitor-count i {
+        margin-right: 0.5rem;
+        color: var(--primary-color);
+    }
+
+    footer {
+        background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+        color: white;
+        text-align: center;
+        padding: 2rem 1rem;
+        margin-top: 4rem;
+        font-size: 0.9rem;
+        box-shadow: 0 -4px 20px rgba(0,0,0,0.1);
+    }
+
+    footer p {
+        margin-bottom: 0.5rem;
+    }
+
+    @media (max-width: 768px) {
+        .header-content {
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .nav-toggle {
+            display: block;
+            position: absolute;
+            right: 1rem;
+            top: 1rem;
+        }
+
+        .nav-menu {
+            display: none;
+            flex-direction: column;
+            width: 100%;
+            margin-top: 1rem;
+            background-color: rgba(255,255,255,0.95);
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        .nav-menu.show {
+            display: flex;
+        }
+
+        .nav-menu li {
+            margin: 0;
+        }
+
+        .nav-menu a {
+            color: var(--primary-color);
+            padding: 1rem;
+            display: block;
+            text-align: center;
+            border-radius: 0;
+        }
+
+        .nav-menu a:hover {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .container {
+            margin-top: 8rem;
+        }
+
+        .news-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .section-title {
+            font-size: 1.8rem;
+        }
+    }
+
+    /* 添加動畫效果 */
+    @keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .news-item {
+        animation: fadeInUp 0.5s ease-out;
+    }
+
+    .news-item:nth-child(1) { animation-delay: 0.1s; }
+    .news-item:nth-child(2) { animation-delay: 0.2s; }
+    .news-item:nth-child(3) { animation-delay: 0.3s; }
+    .news-item:nth-child(4) { animation-delay: 0.4s; }
+</style>
+</head>
+<body>
+    <header class="header">
+        <div class="header-content">
+            <div class="logo">
+                <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="50" cy="50" r="45" fill="#fff"/>
+                    <text x="50" y="70" font-size="60" text-anchor="middle" fill="var(--primary-color)" font-family="'Noto Sans TC', sans-serif" font-weight="bold">考</text>
+                </svg>
+                <span class="logo-text">TYCTW最新消息</span>
+            </div>
+            <button class="nav-toggle" aria-label="Toggle navigation">☰</button>
+            <nav>
+                <ul class="nav-menu">
+                    <li><a href="https://tyctw.github.io/"><i class="fas fa-info-circle"></i> 落點分析</a></li>
+                    <li><a href="https://tyctw.github.io/Navigation/"><i class="fas fa-envelope"></i> 更多資訊</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        <h2 class="section-title"><i class="fas fa-bullhorn"></i> 最新TYCTW資訊</h2>
+        <div id="news-container" class="news-grid"></div>
+        <button id="refresh-btn"><i class="fas fa-sync-alt"></i> 更新最新消息</button>
+        <div id="visitor-count"><i class="fas fa-eye"></i> <span id="visitor-count-text"></span></div>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 TYCTW會考落點分析平台。保留所有權利。</p>
+        <p><i class="fas fa-exclamation-circle"></i> 本網站內容僅供參考，實際資訊請以官方公告為準。</p>
+    </footer>
+
+<script>
+const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwmBvuMksw7QIJfj4_DcWEikvN-EnG9Z0qgWQSXJLpdPzuPU502E_z2_00Lfv2LKGLI/exec';
+
+async function fetchNews() {
+    try {
+        const response = await fetch(SCRIPT_URL + '?action=getNews');
+        const data = await response.json();
+        displayNews(data.news);
+        updateVisitorCount(data.visitorCount);
+    } catch (error) {
+        console.error('Error fetching news:', error);
+        alert('無法獲取最新消息，請稍後再試。');
+    }
+}
+
+function displayNews(newsItems) {
+    const newsContainer = document.getElementById('news-container');
+    newsContainer.innerHTML = '';
+    newsItems.forEach((item, index) => {
+        const newsItem = document.createElement('article');
+        newsItem.className = 'news-item';
+        newsItem.style.animationDelay = `${0.1 * (index + 1)}s`;
+        
+        newsItem.innerHTML = `
+            <div class="news-content">
+                <div class="news-date"><i class="far fa-calendar-alt"></i> ${formatDate(item.date)}</div>
+                <h3 class="news-title">${item.title}</h3>
+                <p class="news-excerpt">${item.content.substring(0, 100)}...</p>
+                <a href="${item.link}" class="read-more" target="_blank" rel="noopener noreferrer">閱讀更多 <i class="fas fa-arrow-right"></i></a>
+            </div>
+        `;
+        newsContainer.appendChild(newsItem);
+    });
+}
+
+function updateVisitorCount(count) {
+    const visitorCountElement = document.getElementById('visitor-count-text');
+    visitorCountElement.textContent = `網站總瀏覽次數：${count}`;
+}
+
+function formatDate(dateString) {
+    const options = { year: 'numeric', month: 'long', day: 'numeric' };
+    return new Date(dateString).toLocaleDateString('zh-TW', options);
+}
+
+async function incrementVisitorCount() {
+    try {
+        const response = await fetch(SCRIPT_URL + '?action=incrementVisitorCount', { method: 'POST' });
+        const data = await response.json();
+        updateVisitorCount(data.visitorCount);
+    } catch (error) {
+        console.error('Error incrementing visitor count:', error);
+    }
+}
+
+document.getElementById('refresh-btn').addEventListener('click', fetchNews);
+
+// 處理手機版選單
+const navToggle = document.querySelector('.nav-toggle');
+const navMenu = document.querySelector('.nav-menu');
+
+navToggle.addEventListener('click', () => {
+    navMenu.classList.toggle('show');
+});
+
+// 關閉選單當點擊選單項目
+navMenu.addEventListener('click', (e) => {
+    if (e.target.tagName === 'A') {
+        navMenu.classList.remove('show');
+    }
+});
+
+// 滾動時改變header樣式
+window.addEventListener('scroll', () => {
+    const header = document.querySelector('.header');
+    if (window.scrollY > 100) {
+        header.style.padding = '0.5rem 0';
+        header.style.boxShadow = '0 2px 10px rgba(0,0,0,0.1)';
+    } else {
+        header.style.padding = '1rem 0';
+        header.style.boxShadow = '0 4px 20px rgba(0,0,0,0.1)';
+    }
+});
+
+// 初始載入新聞和增加訪問計數
+fetchNews();
+incrementVisitorCount();
+</script>
+</body>
+</html>
