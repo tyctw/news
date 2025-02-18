@@ -77,35 +77,39 @@ function updateContent() {
   }
 }
 
-function fetchNavItems() {
-  fetch('https://script.google.com/macros/s/AKfycbwRsZhyEsERd2QAPJDVNOEKcIFf96C2EoL2N4n8nMErJpq-8FY9Th6JgrDoW_bU8Dewew/exec')
-    .then(response => response.json())
-    .then(data => {
-      const navList = document.getElementById('navList');
-      data.forEach(item => {
-        const li = document.createElement('li');
-        li.className = 'nav-item';
-        li.innerHTML = `
-          <a href="${item.link}" class="nav-link">
-            <i class="${item.icon} icon"></i>
-            <span class="nav-title">${item.title}</span>
-            <p class="nav-description">${item.description}</p>
-            ${item.badge ? `<span class="badge ${item.badge}-badge">${item.badge}</span>` : ''}
-          </a>
-        `;
-        navList.appendChild(li);
-      });
-      initializeNavEffects();
-      updateContent();
-      document.documentElement.setAttribute('data-theme', currentMode);
-      document.body.setAttribute('data-theme', currentMode);
-      updateModeIcon();
-      hideLoadingOverlay();
-    })
-    .catch(error => {
-      console.error('Error fetching nav items:', error);
-      hideLoadingOverlay();
-    });
+// New: Add staggered fade-in animation to navigation items for a smoother appearance.
+function initializeNavEffects() {
+  const navItems = document.querySelectorAll('#navList .nav-item');
+  navItems.forEach((item, index) => {
+    item.style.opacity = 0;
+    item.style.animation = 'fadeInUp 0.8s ease forwards';
+    item.style.animationDelay = `${index * 0.1}s`;
+  });
+}
+
+// New: Filter navigation items based on the search input.
+function filterNavItems() {
+  const filter = document.getElementById('searchInput').value.toLowerCase();
+  const navItems = document.querySelectorAll('#navList .nav-item');
+  navItems.forEach(item => {
+    const text = item.textContent.toLowerCase();
+    item.style.display = text.includes(filter) ? "block" : "none";
+  });
+}
+
+// New: Setup Back to Top button functionality.
+function setupBackToTop() {
+  const backToTopButton = document.getElementById('backToTop');
+  window.addEventListener('scroll', () => {
+    if (document.documentElement.scrollTop > 200 || document.body.scrollTop > 200) {
+      backToTopButton.style.display = 'block';
+    } else {
+      backToTopButton.style.display = 'none';
+    }
+  });
+  backToTopButton.addEventListener('click', () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
 }
 
 function hideLoadingOverlay() {
@@ -136,33 +140,36 @@ function updateCountdown() {
   }
 }
 
-function initializeNavEffects() {
-  // Additional navigation effects can be added here if needed.
-}
-
-// New: Filter navigation items based on the search input.
-function filterNavItems() {
-  const filter = document.getElementById('searchInput').value.toLowerCase();
-  const navItems = document.querySelectorAll('#navList .nav-item');
-  navItems.forEach(item => {
-    const text = item.textContent.toLowerCase();
-    item.style.display = text.includes(filter) ? "block" : "none";
-  });
-}
-
-// New: Setup Back to Top button functionality.
-function setupBackToTop() {
-  const backToTopButton = document.getElementById('backToTop');
-  window.addEventListener('scroll', () => {
-    if (document.documentElement.scrollTop > 200 || document.body.scrollTop > 200) {
-      backToTopButton.style.display = 'block';
-    } else {
-      backToTopButton.style.display = 'none';
-    }
-  });
-  backToTopButton.addEventListener('click', () => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  });
+// Fetch navigation items from external source
+function fetchNavItems() {
+  fetch('https://script.google.com/macros/s/AKfycbwRsZhyEsERd2QAPJDVNOEKcIFf96C2EoL2N4n8nMErJpq-8FY9Th6JgrDoW_bU8Dewew/exec')
+    .then(response => response.json())
+    .then(data => {
+      const navList = document.getElementById('navList');
+      data.forEach(item => {
+        const li = document.createElement('li');
+        li.className = 'nav-item';
+        li.innerHTML = `
+          <a href="${item.link}" class="nav-link">
+            <i class="${item.icon} icon"></i>
+            <span class="nav-title">${item.title}</span>
+            <p class="nav-description">${item.description}</p>
+            ${item.badge ? `<span class="badge ${item.badge}-badge">${item.badge}</span>` : ''}
+          </a>
+        `;
+        navList.appendChild(li);
+      });
+      initializeNavEffects();
+      updateContent();
+      document.documentElement.setAttribute('data-theme', currentMode);
+      document.body.setAttribute('data-theme', currentMode);
+      updateModeIcon();
+      hideLoadingOverlay();
+    })
+    .catch(error => {
+      console.error('Error fetching nav items:', error);
+      hideLoadingOverlay();
+    });
 }
 
 // Main event listener
