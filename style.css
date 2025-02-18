@@ -1,0 +1,326 @@
+/* Color Variables for Light and Dark modes */
+:root {
+  /* Light mode variables */
+  --primary-color: #4a90e2;
+  --secondary-color: #50c878;
+  --background-color: #f0f4f8;
+  --text-color: #333;
+  --hover-color: #ff6b6b;
+  --accent-color: #FF6600;
+  --new-color: #FF1493;
+  --newest-color: #32CD32;
+  --latest-color: #1E90FF;
+  --container-bg: rgba(255, 255, 255, 0.95);
+  --footer-bg: rgba(240, 240, 240, 0.8);
+}
+
+[data-theme="dark"] {
+  /* Dark mode variables */
+  --primary-color: #6ab0ff;
+  --secondary-color: #70e898;
+  --background-color: #121212;
+  --text-color: #f0f0f0;
+  --hover-color: #ff8b8b;
+  --accent-color: #FF8C40;
+  --new-color: #FF69B4;
+  --newest-color: #32CD32;
+  --latest-color: #4169E1;
+  --container-bg: rgba(30, 30, 30, 0.95);
+  --footer-bg: rgba(18, 18, 18, 0.8);
+}
+
+/* Basic resets */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background: var(--background-color);
+  color: var(--text-color);
+  font-family: 'Noto Sans TC', Arial, sans-serif;
+  line-height: 1.6;
+}
+
+/* Top Controls */
+.top-controls {
+  position: fixed;
+  top: 10px;
+  right: 20px;
+  z-index: 1100;
+  display: flex;
+  gap: 10px;
+}
+
+#languageToggle, #modeToggle {
+  background-color: var(--primary-color);
+  color: #fff;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background-color 0.3s ease;
+}
+
+#languageToggle:hover, #modeToggle:hover {
+  background-color: var(--hover-color);
+}
+
+/* Loading overlay */
+.loading-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(18, 18, 18, 0.9);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+  transition: opacity 0.5s ease-out;
+}
+
+.loading-overlay[data-theme="light"] {
+  background-color: rgba(240, 240, 240, 0.9);
+}
+
+.loading-spinner {
+  width: 50px;
+  height: 50px;
+  border: 5px solid var(--primary-color);
+  border-top: 5px solid var(--secondary-color);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.loading-text {
+  color: var(--primary-color);
+  font-size: 1.2rem;
+  margin-top: 20px;
+  font-weight: bold;
+}
+
+/* Hero Section */
+.hero {
+  position: relative;
+  width: 100%;
+  height: 300px;
+  background: var(--container-bg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  margin-bottom: 2rem;
+}
+
+.hero-content {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+}
+
+.hero h1 {
+  font-size: 3rem;
+  color: var(--primary-color);
+  text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+  margin-bottom: 1rem;
+}
+
+.hero #countdownContainer p {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: var(--text-color);
+}
+
+/* Animated SVG background in Hero */
+.hero-bg {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  height: auto;
+  z-index: 1;
+}
+
+/* Main Content */
+.main-content {
+  width: 95%;
+  max-width: 1300px;
+  margin: 0 auto 2rem;
+}
+
+/* Navigation Grid */
+.nav-list {
+  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 2rem;
+  margin-bottom: 2rem;
+}
+
+.nav-item {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.nav-item:hover {
+  transform: translateY(-5px) scale(1.02);
+  box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+}
+
+.nav-link {
+  background-color: var(--container-bg);
+  display: flex;
+  flex-direction: column;
+  padding: 1.5rem;
+  border-radius: 15px;
+  color: var(--text-color);
+  text-decoration: none;
+  transition: all 0.3s ease;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+  position: relative;
+  overflow: hidden;
+  border: 1px solid rgba(0,0,0,0.1);
+  height: 100%;
+}
+
+[data-theme="dark"] .nav-link {
+  background-color: #1e1e1e;
+  border: 1px solid rgba(255,255,255,0.1);
+}
+
+.nav-link:hover {
+  background: linear-gradient(135deg, var(--hover-color) 0%, var(--primary-color) 100%);
+  color: #fff;
+  transform: translateY(-3px);
+}
+
+.icon {
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+  color: var(--primary-color);
+  transition: color 0.3s ease, transform 0.3s ease;
+}
+
+.nav-link:hover .icon {
+  color: #fff;
+  transform: scale(1.1);
+}
+
+.nav-title {
+  font-size: 1.6rem;
+  font-weight: bold;
+  margin-bottom: 0.8rem;
+}
+
+.nav-description {
+  font-size: 1rem;
+  opacity: 0.7;
+  line-height: 1.4;
+}
+
+/* Badge Styles */
+.badge {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  padding: 5px 10px;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: bold;
+  animation: pulse 2s infinite;
+  box-shadow: 0 0 10px rgba(255,255,255,0.5);
+  text-shadow: 1px 1px 2px rgba(0,0,0,0.8);
+}
+
+.new-badge { 
+  background-color: var(--accent-color);
+  color: #fff; 
+}
+.newest-badge { 
+  background-color: var(--new-color);
+  color: #fff; 
+}
+.latest-badge { 
+  background-color: var(--newest-color);
+  color: #000; 
+  text-shadow: 1px 1px 2px rgba(255,255,255,0.8); 
+}
+.brand-new-badge { 
+  background-color: var(--latest-color);
+  color: #fff; 
+}
+
+@keyframes pulse {
+  0% { transform: scale(1); box-shadow: 0 0 10px rgba(255,255,255,0.5); }
+  50% { transform: scale(1.05); box-shadow: 0 0 20px rgba(255,255,255,0.7); }
+  100% { transform: scale(1); box-shadow: 0 0 10px rgba(255,255,255,0.5); }
+}
+
+/* Coming Soon Section */
+.coming-soon {
+  text-align: center;
+  padding: 2rem;
+  background-color: var(--container-bg);
+  border-radius: 15px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+  margin-bottom: 2rem;
+}
+
+.coming-soon h2 {
+  font-size: 2rem;
+  color: var(--primary-color);
+  margin-bottom: 1rem;
+}
+
+.coming-soon p {
+  font-size: 1.2rem;
+  color: var(--text-color);
+}
+
+/* Footer */
+.footer {
+  text-align: center;
+  padding: 20px;
+  font-size: 0.9rem;
+  background-color: var(--footer-bg);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .hero {
+    height: 250px;
+  }
+  .hero h1 {
+    font-size: 2.5rem;
+  }
+  .hero #countdownContainer p {
+    font-size: 1.2rem;
+  }
+  .nav-list {
+    grid-template-columns: 1fr;
+  }
+  .nav-title {
+    font-size: 1.4rem;
+  }
+  .nav-description {
+    font-size: 0.9rem;
+  }
+}
+
+@media (min-width: 769px) and (max-width: 1024px) {
+  .hero h1 {
+    font-size: 2.8rem;
+  }
+  .nav-list {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
