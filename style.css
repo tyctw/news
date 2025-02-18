@@ -158,6 +158,27 @@ body {
   margin: 0 auto 2rem;
 }
 
+/* Search Container */
+.search-container {
+  text-align: center;
+  margin: 1rem 0;
+}
+
+#searchInput {
+  width: 80%;
+  max-width: 400px;
+  padding: 10px;
+  border: 1px solid var(--primary-color);
+  border-radius: 25px;
+  font-size: 1rem;
+  outline: none;
+  transition: border-color 0.3s;
+}
+
+#searchInput:focus {
+  border-color: var(--hover-color);
+}
+
 /* Navigation Grid */
 .nav-list {
   list-style: none;
@@ -292,6 +313,26 @@ body {
   padding: 20px;
   font-size: 0.9rem;
   background-color: var(--footer-bg);
+}
+
+/* Back to Top Button */
+#backToTop {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background-color: var(--primary-color);
+  color: #fff;
+  border: none;
+  padding: 10px;
+  border-radius: 50%;
+  cursor: pointer;
+  display: none;
+  z-index: 1100;
+  transition: opacity 0.3s ease;
+}
+
+#backToTop:hover {
+  background-color: var(--hover-color);
 }
 
 /* Responsive adjustments */

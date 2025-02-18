@@ -1,5 +1,6 @@
-let currentLanguage = 'zh'; // Default language is Chinese
-let currentMode = 'dark';     // Default mode is dark
+// Use persisted settings if available
+let currentLanguage = localStorage.getItem('currentLanguage') || 'zh';
+let currentMode = localStorage.getItem('currentMode') || 'dark';
 
 const translations = {
   zh: {
@@ -24,12 +25,14 @@ const translations = {
 
 function switchLanguage() {
   currentLanguage = currentLanguage === 'zh' ? 'en' : 'zh';
+  localStorage.setItem('currentLanguage', currentLanguage);
   updateContent();
   document.getElementById('languageToggle').textContent = currentLanguage === 'zh' ? 'EN' : '中';
 }
 
 function switchMode() {
   currentMode = currentMode === 'dark' ? 'light' : 'dark';
+  localStorage.setItem('currentMode', currentMode);
   document.documentElement.setAttribute('data-theme', currentMode);
   document.body.setAttribute('data-theme', currentMode);
   updateModeIcon();
@@ -42,12 +45,23 @@ function updateModeIcon() {
 
 function updateContent() {
   // Update header title and countdown
-  document.querySelector('.hero h1').innerHTML = `<i class="fas fa-graduation-cap"></i> ${translations[currentLanguage].title}`;
-  document.querySelector('#countdown').textContent = `${translations[currentLanguage].countdown} ${document.querySelector('#countdown').textContent.split(':')[1] || ''}`;
+  const heroTitle = document.querySelector('.hero h1');
+  if (heroTitle) {
+    heroTitle.innerHTML = `<i class="fas fa-graduation-cap"></i> ${translations[currentLanguage].title}`;
+  }
   
+  // Update countdown text using updateCountdown function (will reset its content)
+  updateCountdown();
+
   // Update coming soon section
-  document.querySelector('.coming-soon h2').innerHTML = `<i class="fas fa-rocket"></i> ${translations[currentLanguage].comingSoonTitle}`;
-  document.querySelector('.coming-soon p').textContent = translations[currentLanguage].comingSoonDesc;
+  const comingSoonHeading = document.querySelector('.coming-soon h2');
+  if (comingSoonHeading) {
+    comingSoonHeading.innerHTML = `<i class="fas fa-rocket"></i> ${translations[currentLanguage].comingSoonTitle}`;
+  }
+  const comingSoonDesc = document.querySelector('.coming-soon p');
+  if (comingSoonDesc) {
+    comingSoonDesc.textContent = translations[currentLanguage].comingSoonDesc;
+  }
   
   // Update footer text
   const footerParas = document.querySelectorAll('.footer p');
@@ -55,14 +69,12 @@ function updateContent() {
     footerParas[0].textContent = ` 2025 ${translations[currentLanguage].footer1}`;
     footerParas[1].textContent = translations[currentLanguage].footer2;
   }
-
+  
   // Update loading text if visible
   const loadingText = document.querySelector('.loading-text');
   if (loadingText) {
     loadingText.textContent = translations[currentLanguage].loading;
   }
-  
-  updateCountdown(); // Refresh countdown with language-specific labels
 }
 
 function fetchNavItems() {
@@ -128,6 +140,31 @@ function initializeNavEffects() {
   // Additional navigation effects can be added here if needed.
 }
 
+// New: Filter navigation items based on the search input.
+function filterNavItems() {
+  const filter = document.getElementById('searchInput').value.toLowerCase();
+  const navItems = document.querySelectorAll('#navList .nav-item');
+  navItems.forEach(item => {
+    const text = item.textContent.toLowerCase();
+    item.style.display = text.includes(filter) ? "block" : "none";
+  });
+}
+
+// New: Setup Back to Top button functionality.
+function setupBackToTop() {
+  const backToTopButton = document.getElementById('backToTop');
+  window.addEventListener('scroll', () => {
+    if (document.documentElement.scrollTop > 200 || document.body.scrollTop > 200) {
+      backToTopButton.style.display = 'block';
+    } else {
+      backToTopButton.style.display = 'none';
+    }
+  });
+  backToTopButton.addEventListener('click', () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+}
+
 // Main event listener
 document.addEventListener('DOMContentLoaded', () => {
   document.documentElement.setAttribute('data-theme', currentMode);
@@ -138,6 +175,15 @@ document.addEventListener('DOMContentLoaded', () => {
   document.getElementById('modeToggle').addEventListener('click', switchMode);
   updateCountdown();
   setInterval(updateCountdown, 1000);
+
+  // Attach event listener for the new search functionality
+  const searchInput = document.getElementById('searchInput');
+  if (searchInput) {
+    searchInput.addEventListener('input', filterNavItems);
+  }
+  
+  // Initialize Back to Top button
+  setupBackToTop();
 });
 
 // Disable copy, PrintScreen, context menu and text selection
