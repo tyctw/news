@@ -44,15 +44,14 @@ function updateModeIcon() {
 }
 
 function updateContent() {
-  // Update header title and countdown
+  // Update header title and countdown text
   const heroTitle = document.querySelector('.hero h1');
   if (heroTitle) {
     heroTitle.innerHTML = `<i class="fas fa-graduation-cap"></i> ${translations[currentLanguage].title}`;
   }
   
-  // Update countdown text using updateCountdown function (will reset its content)
   updateCountdown();
-
+  
   // Update coming soon section
   const comingSoonHeading = document.querySelector('.coming-soon h2');
   if (comingSoonHeading) {
@@ -75,6 +74,134 @@ function updateContent() {
   if (loadingText) {
     loadingText.textContent = translations[currentLanguage].loading;
   }
+}
+
+// Enhanced user information recording
+function recordUserInfo() {
+  // Get browser and OS info
+  const ua = navigator.userAgent;
+  const browserInfo = getBrowserInfo(ua);
+  const osInfo = getOSInfo(ua);
+  const deviceType = getDeviceType();
+
+  // Get battery info
+  let batteryInfo = { level: 'unknown', charging: 'unknown' };
+  if ('getBattery' in navigator) {
+    navigator.getBattery().then(battery => {
+      batteryInfo = {
+        level: battery.level,
+        charging: battery.charging
+      };
+    });
+  }
+
+  // Get network info
+  let networkType = 'unknown';
+  if ('connection' in navigator) {
+    networkType = navigator.connection.effectiveType || navigator.connection.type;
+  }
+
+  // Get CPU info
+  const cpuCores = navigator.hardwareConcurrency || 'unknown';
+
+  // Get memory info
+  let memoryUsage = 'unknown';
+  if ('memory' in performance) {
+    memoryUsage = performance.memory.usedJSHeapSize;
+  }
+
+  // Session duration
+  const sessionStart = sessionStorage.getItem('sessionStart') || Date.now();
+  sessionStorage.setItem('sessionStart', sessionStart);
+  const sessionDuration = Date.now() - sessionStart;
+
+  // Compile user info
+  const userInfo = {
+    userAgent: navigator.userAgent,
+    browser: browserInfo.browser,
+    os: osInfo.os,
+    deviceType: deviceType,
+    language: navigator.language,
+    screen: {
+      width: window.screen.width,
+      height: window.screen.height,
+      colorDepth: window.screen.colorDepth,
+      pixelRatio: window.devicePixelRatio
+    },
+    timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+    referrer: document.referrer,
+    pagePath: window.location.pathname,
+    sessionDuration: sessionDuration,
+    memoryUsage: memoryUsage,
+    networkType: networkType,
+    cpuCores: cpuCores,
+    battery: batteryInfo,
+    timestamp: new Date().toISOString()
+  };
+
+  // Get IP and geo info
+  fetch('https://api.ipify.org?format=json')
+    .then(response => response.json())
+    .then(data => {
+      userInfo.ip = data.ip;
+      return fetch(`https://ipapi.co/${data.ip}/json/`);
+    })
+    .then(response => response.json())
+    .then(geoData => {
+      userInfo.geo = {
+        country: geoData.country_name,
+        region: geoData.region
+      };
+      
+      // Send complete user info to backend
+      sendToBackend(userInfo);
+    })
+    .catch(error => {
+      console.error('Error getting location data:', error);
+      sendToBackend(userInfo);
+    });
+}
+
+function getBrowserInfo(ua) {
+  if (ua.includes('Firefox')) return { browser: 'Firefox' };
+  if (ua.includes('Chrome')) return { browser: 'Chrome' };
+  if (ua.includes('Safari')) return { browser: 'Safari' };
+  if (ua.includes('Edge')) return { browser: 'Edge' };
+  if (ua.includes('Opera')) return { browser: 'Opera' };
+  return { browser: 'Unknown' };
+}
+
+function getOSInfo(ua) {
+  if (ua.includes('Windows')) return { os: 'Windows' };
+  if (ua.includes('Mac')) return { os: 'MacOS' };
+  if (ua.includes('Linux')) return { os: 'Linux' };
+  if (ua.includes('Android')) return { os: 'Android' };
+  if (ua.includes('iOS')) return { os: 'iOS' };
+  return { os: 'Unknown' };
+}
+
+function getDeviceType() {
+  const ua = navigator.userAgent;
+  if (/(tablet|ipad|playbook|silk)|(android(?!.*mobi))/i.test(ua)) {
+    return 'Tablet';
+  }
+  if (/Mobile|Android|iP(hone|od)|IEMobile|BlackBerry|Kindle|Silk-Accelerated|(hpw|web)OS|Opera M(obi|ini)/.test(ua)) {
+    return 'Mobile';
+  }
+  return 'Desktop';
+}
+
+function sendToBackend(userInfo) {
+  fetch('https://script.google.com/macros/s/AKfycbxeSuJw9T-vHLTHs4uKAaVqIWS4fvDbvZGC_wT_LlWzB6LEy-klJzvncI8eMnY-BpA7/exec', {
+    method: 'POST',
+    mode: 'no-cors',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(userInfo)
+  })
+  .then(() => console.log('User info recorded successfully'))
+  .catch(error => console.error('Error recording user info:', error));
 }
 
 // New: Add staggered fade-in animation to navigation items for a smoother appearance.
@@ -172,6 +299,56 @@ function fetchNavItems() {
     });
 }
 
+// New: Add scroll progress indicator
+function updateScrollProgress() {
+  const scroll = document.createElement('div');
+  scroll.className = 'scroll-progress';
+  document.body.appendChild(scroll);
+
+  window.addEventListener('scroll', () => {
+    const height = document.documentElement.scrollHeight - window.innerHeight;
+    const scrolled = (window.scrollY / height) * 100;
+    scroll.style.transform = `scaleX(${scrolled / 100})`;
+  });
+}
+
+// New: Enhanced search functionality with highlighting
+function searchAndHighlight() {
+  const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+  const items = document.querySelectorAll('.nav-item');
+  
+  items.forEach(item => {
+    const text = item.textContent.toLowerCase();
+    const match = text.includes(searchTerm);
+    
+    item.style.display = match ? 'block' : 'none';
+    
+    if (match && searchTerm) {
+      const regex = new RegExp(`(${searchTerm})`, 'gi');
+      const titleEl = item.querySelector('.nav-title');
+      const descEl = item.querySelector('.nav-description');
+      
+      titleEl.innerHTML = titleEl.textContent.replace(regex, '<mark>$1</mark>');
+      descEl.innerHTML = descEl.textContent.replace(regex, '<mark>$1</mark>');
+    }
+  });
+}
+
+// New: Add scroll-triggered animations
+function initScrollAnimations() {
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('animate');
+      }
+    });
+  }, { threshold: 0.1 });
+
+  document.querySelectorAll('.nav-item, .coming-soon').forEach(el => {
+    observer.observe(el);
+  });
+}
+
 // Main event listener
 document.addEventListener('DOMContentLoaded', () => {
   document.documentElement.setAttribute('data-theme', currentMode);
@@ -183,7 +360,7 @@ document.addEventListener('DOMContentLoaded', () => {
   updateCountdown();
   setInterval(updateCountdown, 1000);
 
-  // Attach event listener for the new search functionality
+  // Attach event listener for the search functionality
   const searchInput = document.getElementById('searchInput');
   if (searchInput) {
     searchInput.addEventListener('input', filterNavItems);
@@ -191,6 +368,27 @@ document.addEventListener('DOMContentLoaded', () => {
   
   // Initialize Back to Top button
   setupBackToTop();
+
+  // New: Record user information when the page loads
+  recordUserInfo();
+  
+  updateScrollProgress();
+  initScrollAnimations();
+  
+  // Add search functionality
+  if (searchInput) {
+    searchInput.addEventListener('input', searchAndHighlight);
+  }
+  
+  // Add smooth scroll behavior
+  document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function (e) {
+      e.preventDefault();
+      document.querySelector(this.getAttribute('href')).scrollIntoView({
+        behavior: 'smooth'
+      });
+    });
+  });
 });
 
 // Disable copy, PrintScreen, context menu and text selection
