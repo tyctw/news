@@ -1,348 +1,135 @@
-<!DOCTYPE html>
-<html lang="zh">
+<!doctype html>
+<html lang="zh-Hant">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="會考資訊整合平台 - 提供即時的查榜資訊、分數序位參考，以及系統異常回報。">
-  <title>TYCTW會考資訊整合平台</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Noto+Sans+TC:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <meta name="description" content="TYCTW 116 年國中教育會考資訊整合平台，提供會考成績查詢、落點分析、志願選填、升學資訊與歷年資料。">
+  <meta name="keywords" content="116會考,國中教育會考,會考成績查詢,會考落點分析,志願選填,升學資訊,TYCTW">
+  <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+  <meta name="theme-color" content="#eef7ff">
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="zh_TW">
+  <meta property="og:title" content="TYCTW｜116 年國中教育會考資訊整合平台">
+  <meta property="og:description" content="會考成績查詢、落點分析、志願選填與升學資訊，一站整合。">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="TYCTW｜116 年國中教育會考資訊整合平台">
+  <meta name="twitter:description" content="會考成績查詢、落點分析、志願選填與升學資訊，一站整合。">
+  <title>TYCTW｜116 年國中教育會考資訊整合平台</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Noto+Sans+TC:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+  <link rel="stylesheet" href="style.css">
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "name": "TYCTW 會考資訊整合平台",
+      "description": "提供 116 年國中教育會考成績查詢、落點分析、志願選填與升學資訊。",
+      "inLanguage": "zh-Hant-TW",
+      "about": { "@type": "Thing", "name": "國中教育會考與升學資訊" },
+      "audience": { "@type": "EducationalAudience", "educationalRole": "student" }
+    }
+  </script>
 </head>
-<body data-theme="dark">
-  <!-- Loading overlay with modern design -->
-  <div id="loadingOverlay" class="loading-overlay">
-    <div class="loading-content">
-      <div class="loading-logo">
-        <div class="logo-icon">
-          <i class="fas fa-graduation-cap"></i>
-        </div>
-        <div class="logo-text">TYCTW</div>
-      </div>
-      <div class="loading-spinner-container">
-        <div class="loading-spinner"></div>
-        <div class="loading-dots">
-          <span></span>
-          <span></span>
-          <span></span>
-        </div>
-      </div>
-      <p class="loading-text">載入中...</p>
-    </div>
-    <div class="loading-background">
-      <div class="floating-shapes">
-        <div class="shape shape-1"></div>
-        <div class="shape shape-2"></div>
-        <div class="shape shape-3"></div>
-        <div class="shape shape-4"></div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Navigation Header -->
+<body data-theme="light">
+  <a class="skip-link" href="#main-content">跳至主要內容</a>
+  <div class="page-noise"></div>
   <nav class="main-nav">
-    <div class="nav-container">
-      <div class="nav-brand">
-        <div class="brand-icon">
-          <i class="fas fa-graduation-cap"></i>
-        </div>
-        <span class="brand-text">TYCTW</span>
-      </div>
-      
-      <div class="nav-controls">
-        <button id="languageToggle" class="control-btn" aria-label="切換語言">
-          <span class="btn-text">EN</span>
-          <i class="fas fa-globe"></i>
-        </button>
-        <button id="modeToggle" class="control-btn" aria-label="切換主題">
-          <i class="fas fa-sun"></i>
-        </button>
-      </div>
+    <a class="nav-brand" href="#top" aria-label="TYCTW 首頁">
+      <span class="brand-mark">T.</span><span>TYCTW</span>
+    </a>
+    <div class="nav-links" aria-label="主要導覽">
+      <a href="#tools">服務</a>
     </div>
   </nav>
 
-  <!-- Hero section with modern design -->
-  <header class="hero">
-    <div class="hero-background">
-      <div class="gradient-orb orb-1"></div>
-      <div class="gradient-orb orb-2"></div>
-      <div class="gradient-orb orb-3"></div>
-      <div class="grid-pattern"></div>
-    </div>
-    
-    <div class="hero-container">
-      <div class="hero-content">
-        <div class="hero-badge">
-          <i class="fas fa-star"></i>
-          <span>會考資訊整合平台</span>
-        </div>
-        
-        <h1 class="hero-title">
-          <span class="title-line">TYCTW</span>
-          <span class="title-line highlight">會考資訊</span>
-          <span class="title-line">整合平台</span>
-        </h1>
-        
-        <p class="hero-description">
-          為您提供最完整的會考資訊服務，包括即時查榜、分數分析、落點預測等全方位功能
-        </p>
-        
-        <div id="countdownContainer" class="countdown-container">
-          <div class="countdown-label">
-            <i class="fas fa-clock"></i>
-            <span>115會考倒數</span>
+  <main id="main-content" tabindex="-1">
+    <header id="top" class="hero">
+      <div class="hero-glow glow-one"></div><div class="hero-glow glow-two"></div>
+      <div class="hero-grid"></div>
+      <div class="hero-container">
+        <div class="hero-copy">
+          <p class="eyebrow"><span></span> 2027 NATIONAL EXAM</p>
+          <h1>準備好，<br><em>走向你的下一站。</em></h1>
+          <p class="hero-description">整合會考查詢、落點分析與升學資訊，在每個重要決定前，給你清楚的方向。</p>
+          <div class="hero-actions">
+            <a class="cta-button primary" href="#tools">探索所有服務 <i class="fa-solid fa-arrow-down" aria-hidden="true"></i></a>
+            <a class="text-button" href="#articles">閱讀會考文章 <i class="fa-solid fa-arrow-down" aria-hidden="true"></i></a>
           </div>
+        </div>
+        <aside id="countdownContainer" class="countdown-container" aria-label="116 會考倒數">
+          <div class="countdown-topline"><span class="live-dot"></span><span class="countdown-title">116 會考倒數</span><span class="countdown-date">05.15 — 05.16</span></div>
           <div class="countdown-display">
-            <div class="countdown-item">
-              <span class="countdown-number" id="days">--</span>
-              <span class="countdown-label">天</span>
-            </div>
-            <div class="countdown-separator">:</div>
-            <div class="countdown-item">
-              <span class="countdown-number" id="hours">--</span>
-              <span class="countdown-label">時</span>
-            </div>
-            <div class="countdown-separator">:</div>
-            <div class="countdown-item">
-              <span class="countdown-number" id="minutes">--</span>
-              <span class="countdown-label">分</span>
-            </div>
-            <div class="countdown-separator">:</div>
-            <div class="countdown-item">
-              <span class="countdown-number" id="seconds">--</span>
-              <span class="countdown-label">秒</span>
-            </div>
+            <div class="countdown-item"><strong id="days">--</strong><span>日</span></div>
+            <div class="countdown-item"><strong id="hours">--</strong><span>時</span></div>
+            <div class="countdown-item"><strong id="minutes">--</strong><span>分</span></div>
+            <div class="countdown-item"><strong id="seconds">--</strong><span>秒</span></div>
           </div>
-        </div>
-        
-        <div class="hero-actions">
-          <button class="cta-button primary">
-            <span>開始使用</span>
-            <i class="fas fa-arrow-right"></i>
-          </button>
-          <button class="cta-button secondary">
-            <i class="fas fa-info-circle"></i>
-            <span>了解更多</span>
-          </button>
-        </div>
+          <p>距離 116 年國中教育會考首日</p>
+        </aside>
       </div>
-      
-      <div class="hero-visual">
-        <div class="floating-cards">
-          <div class="floating-card card-1">
-            <i class="fas fa-chart-line"></i>
-            <span>成績分析</span>
-          </div>
-          <div class="floating-card card-2">
-            <i class="fas fa-search"></i>
-            <span>查榜服務</span>
-          </div>
-          <div class="floating-card card-3">
-            <i class="fas fa-target"></i>
-            <span>落點預測</span>
-          </div>
-        </div>
-      </div>
-    </div>
-  </header>
+      <div class="hero-footer"><span>SCROLL TO EXPLORE</span><i class="fa-solid fa-arrow-down"></i><span>TYCTW / 2027</span></div>
+    </header>
 
-  <!-- Main content -->
-  <main class="main-content">
-    <!-- Search Section -->
-    <section class="search-section">
-      <div class="search-container">
-        <div class="search-header">
-          <h2 class="section-title">
-            <i class="fas fa-search"></i>
-            搜尋功能
-          </h2>
-          <p class="section-subtitle">快速找到您需要的工具和服務</p>
-        </div>
-        
-        <div class="search-input-container">
-          <div class="search-input-wrapper">
-            <i class="fas fa-search search-icon"></i>
-            <input type="text" id="searchInput" placeholder="搜尋功能或工具..." autocomplete="off">
-            <button class="search-clear" id="searchClear" style="display: none;">
-              <i class="fas fa-times"></i>
-            </button>
-          </div>
-          <div class="search-suggestions" id="searchSuggestions"></div>
-        </div>
+    <section id="tools" class="tools-section">
+      <div class="section-heading">
+        <div><p class="eyebrow"><span></span> EXPLORE SERVICES</p><h2>你需要的，<br>都在這裡。</h2></div>
+        <p class="section-intro">選擇一項服務開始，讓複雜的升學資訊變得簡單、可靠。</p>
+      </div>
+      <div class="search-input-container">
+        <label class="sr-only" for="searchInput">搜尋服務或關鍵字</label><i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i><input id="searchInput" type="search" autocomplete="off" placeholder="搜尋服務或關鍵字"><button id="searchClear" type="button" aria-label="清除搜尋" hidden>×</button>
+        <div id="searchSuggestions" class="search-suggestions"></div>
+      </div>
+      <div id="navList" class="features-grid" aria-live="polite"></div>
+    </section>
+
+    <section id="articles" class="articles-section" aria-labelledby="articles-title">
+      <div class="section-heading">
+        <div><p class="eyebrow"><span></span> EXAM GUIDE</p><h2 id="articles-title">讀懂會考，<br>準備更踏實。</h2></div>
+        <p class="section-intro">從考試日期、科目到最後衝刺策略，把真正重要的事先整理好。</p>
+      </div>
+      <div class="article-grid">
+        <article class="article-card featured">
+          <p class="article-meta">01 / 重要時程</p>
+          <h3>116 年會考已定檔：5 月 15、16 日</h3>
+          <p>教育部已公告，116 年國中教育會考於 2027 年 5 月 15、16 日舉行。現在最適合做的不是焦慮地倒數，而是先排出複習節奏：每週保留一次完整練習與訂正，讓考前兩週能從容調整。</p>
+          <p class="article-note">提醒：報名、考場、各節考試時間與成績公布日，仍應以當年度簡章及國中教育會考官方網站公告為準。</p>
+          <a class="article-read" href="article-schedule.html">閱讀全文 <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></a>
+        </article>
+        <article class="article-card">
+          <p class="article-meta">02 / 考試重點</p>
+          <h3>會考考什麼？先掌握 6 個測驗項目</h3>
+          <p>會考包含國文、英語、數學、社會、自然及寫作測驗；英語科另分閱讀與聽力。複習時別只追求「寫很多題」，更要把錯題依概念、閱讀理解、計算步驟分類，才知道下一次該補強什麼。</p>
+          <ul><li>國文、英語、社會、自然：建立閱讀題的找證據習慣。</li><li>數學：保留完整計算與推理過程，非選擇題尤其重要。</li><li>寫作：固定練習審題、列提綱與檢查段落是否回應題目。</li></ul>
+          <a class="article-read" href="article-subjects.html">閱讀全文 <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></a>
+        </article>
+        <article class="article-card">
+          <p class="article-meta">03 / 考前策略</p>
+          <h3>最後 30 天，不靠熬夜也能穩定進步</h3>
+          <p>把衝刺拆成小單位：每天一科主力複習、一道跨科錯題回顧，再用 20 分鐘整理今天最容易忘的觀念。完成題目後，先問自己「錯在哪一步」，再看答案；訂正的品質，比多寫一回題本更有價值。</p>
+          <ol><li>每週安排一次限時練習，熟悉節奏。</li><li>建立一頁式錯題清單，考前只看這份。</li><li>考前一週調整睡眠與用品，不再大量換新題。</li></ol>
+          <a class="article-read" href="article-strategy.html">閱讀全文 <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></a>
+        </article>
+        <article class="article-card">
+          <p class="article-meta">04 / 應試提醒</p>
+          <h3>會考當天怎麼準備？一份不慌張的應試清單</h3>
+          <p>從前一晚的睡眠、出門前的證件與文具，到進考場後的時間分配，先把流程想清楚，才能把注意力留給題目。</p>
+          <a class="article-read" href="article-exam-day.html">閱讀全文 <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></a>
+        </article>
+        <article class="article-card">
+          <p class="article-meta">05 / 升學規劃</p>
+          <h3>成績公布後怎麼看？用三步驟規劃下一站</h3>
+          <p>成績是選擇的起點，不是唯一答案。先理解自己的條件，再比較校系與通勤、學習方向，做出更適合自己的決定。</p>
+          <a class="article-read" href="article-planning.html">閱讀全文 <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></a>
+        </article>
       </div>
     </section>
 
-    <!-- Features Grid -->
-    <section class="features-section">
-      <div class="features-container">
-        <div class="section-header">
-          <h2 class="section-title">
-            <i class="fas fa-th-large"></i>
-            功能導航
-          </h2>
-          <p class="section-subtitle">探索我們提供的各種會考相關服務</p>
-        </div>
-        
-        <div class="features-grid" id="navList">
-          <!-- Navigation items will be dynamically inserted here -->
-        </div>
-      </div>
-    </section>
-
-    <!-- Stats Section -->
-    <section class="stats-section">
-      <div class="stats-container">
-        <div class="stat-item">
-          <div class="stat-icon">
-            <i class="fas fa-users"></i>
-          </div>
-          <div class="stat-content">
-            <div class="stat-number" data-target="無">0</div>
-            <div class="stat-label">服務用戶</div>
-          </div>
-        </div>
-        
-        <div class="stat-item">
-          <div class="stat-icon">
-            <i class="fas fa-chart-bar"></i>
-          </div>
-          <div class="stat-content">
-            <div class="stat-number" data-target="無">0</div>
-            <div class="stat-label">準確率</div>
-          </div>
-        </div>
-        
-        <div class="stat-item">
-          <div class="stat-icon">
-            <i class="fas fa-clock"></i>
-          </div>
-          <div class="stat-content">
-            <div class="stat-number" data-target="24">0</div>
-            <div class="stat-label">小時服務</div>
-          </div>
-        </div>
-        
-        <div class="stat-item">
-          <div class="stat-icon">
-            <i class="fas fa-star"></i>
-          </div>
-          <div class="stat-content">
-            <div class="stat-number" data-target="無">0</div>
-            <div class="stat-label">用戶評分</div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Coming Soon Section -->
-    <section class="coming-soon">
-      <div class="coming-soon-container">
-        <div class="coming-soon-content">
-          <div class="coming-soon-icon">
-            <i class="fas fa-rocket"></i>
-          </div>
-          <h2 class="coming-soon-title">更多功能即將推出！</h2>
-          <p class="coming-soon-description">
-            我們正在不斷努力，為您開發更多有用的工具和資源。敬請期待！
-          </p>
-          <div class="coming-soon-features">
-            <div class="feature-preview">
-              <i class="fas fa-brain"></i>
-              <span>AI智能分析</span>
-            </div>
-            <div class="feature-preview">
-              <i class="fas fa-mobile-alt"></i>
-              <span>行動應用</span>
-            </div>
-            <div class="feature-preview">
-              <i class="fas fa-comments"></i>
-              <span>社群功能</span>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
   </main>
 
-  <!-- Footer -->
-  <footer class="footer">
-    <div class="footer-container">
-      <div class="footer-content">
-        <div class="footer-brand">
-          <div class="footer-logo">
-            <i class="fas fa-graduation-cap"></i>
-            <span>TYCTW</span>
-          </div>
-          <p class="footer-description">
-            專業的會考資訊整合平台，為學生提供最準確、最即時的服務
-          </p>
-        </div>
-        
-        <div class="footer-links">
-          <div class="footer-column">
-            <h4>服務項目</h4>
-            <ul>
-              <li><a href="#">成績查詢</a></li>
-              <li><a href="#">落點分析</a></li>
-              <li><a href="#">志願選填</a></li>
-              <li><a href="#">歷年資料</a></li>
-            </ul>
-          </div>
-          
-          <div class="footer-column">
-            <h4>支援服務</h4>
-            <ul>
-              <li><a href="#">使用說明</a></li>
-              <li><a href="#">常見問題</a></li>
-              <li><a href="#">聯絡我們</a></li>
-              <li><a href="#">意見回饋</a></li>
-            </ul>
-          </div>
-          
-          <div class="footer-column">
-            <h4>社群媒體</h4>
-            <div class="social-links">
-              <a href="https://www.instagram.com/p/DGmtMeLvUQ2/" class="social-link">
-                <i class="fab fa-facebook"></i>
-              </a>
-              <a href="https://www.instagram.com/p/DGmtMeLvUQ2/" class="social-link">
-                <i class="fab fa-instagram"></i>
-              </a>
-              <a href="https://www.instagram.com/p/DGmtMeLvUQ2/" class="social-link">
-                <i class="fab fa-youtube"></i>
-              </a>
-              <a href="https://www.instagram.com/p/DGmtMeLvUQ2/" class="social-link">
-                <i class="fab fa-line"></i>
-              </a>
-            </div>
-          </div>
-        </div>
-      </div>
-      
-      <div class="footer-bottom">
-        <div class="footer-copyright">
-          <p>&copy; 2025 會考資訊整合平台. All rights reserved.</p>
-          <p>由 TYCTW會考落點分析平台 設計與維護</p>
-        </div>
-        <div class="footer-legal">
-          <a href="#">隱私政策</a>
-          <a href="#">服務條款</a>
-          <a href="#">Cookie政策</a>
-        </div>
-      </div>
-    </div>
-  </footer>
-
-  <!-- Back to Top Button -->
-  <button id="backToTop" class="back-to-top" aria-label="回到頂部">
-    <i class="fas fa-arrow-up"></i>
-  </button>
-
-  <!-- Scroll Progress Bar -->
-  <div class="scroll-progress" id="scrollProgress"></div>
-
+  <footer class="footer"><div><a class="nav-brand" href="#top"><span class="brand-mark">T.</span><span>TYCTW</span></a><p>會考資訊整合平台<br>陪你走過每一個選擇。</p></div><p class="footer-copy">© 2026 TYCTW<br>EXAM INFORMATION PLATFORM</p></footer>
+  <button id="backToTop" class="back-to-top" aria-label="回到頂端"><i class="fa-solid fa-arrow-up"></i></button>
   <script src="script.js"></script>
 </body>
 </html>
